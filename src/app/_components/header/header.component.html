@@ -1,0 +1,17 @@
+<nav class="topBar">
+  @let left = leftTemplate();
+  @if (left) {
+    <ng-container [ngTemplateOutlet]="left"></ng-container>
+  }
+  <div class="titleContainer">
+    <div class="flex flex-column">
+      <h3 class="title" title="">{{title()}}</h3>
+    </div>
+  </div>
+
+  @let right = rightTemplate();
+  @if (right) {
+    <ng-container [ngTemplateOutlet]="right"></ng-container>
+  }
+
+</nav>

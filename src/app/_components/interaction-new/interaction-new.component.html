@@ -1,0 +1,26 @@
+<form #newInteractionForm="ngForm">
+
+  <div class="field grid mb-3">
+    <label class="col-4 mb-0 md:col-6" for="interactionId">Interaction Id: <span class="highlight ml-1">*</span></label>
+    <div class="col-8 md:col-6">
+      <input [(ngModel)]="model.key" class="w-full" id="interactionId" maxlength="200" name="interactionId" pInputText
+             required/>
+    </div>
+  </div>
+
+</form>
+
+<div class="flex justify-content-between mt-3">
+  <p-button
+    (onClick)="cancel()"
+    label="Cancel"
+    outlined
+  />
+  <p-button
+    (onClick)="addInteraction()"
+    [disabled]="!newInteractionForm.valid"
+    [loading]="loading"
+    icon="pi pi-plus"
+    label="Add"
+  />
+</div>

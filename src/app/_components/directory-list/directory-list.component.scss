@@ -1,0 +1,22 @@
+.hoverable:hover {
+  color: #FFFFFF !important;
+  background-color: #656565 !important;
+  cursor: pointer;
+
+  .title {
+    color: #FFFFFF !important;
+  }
+
+}
+
+.content {
+  height: calc(100vh - 60px);
+}
+
+.searchbar {
+  background: var(--p-surface-100);
+}
+
+.groupHeader {
+  padding: 0.25rem 1rem;
+}

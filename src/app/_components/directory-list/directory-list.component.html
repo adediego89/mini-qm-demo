@@ -1,0 +1,92 @@
+<app-header isHome title="Antalis QM Demo">
+
+  <ng-template #left>
+    <img alt="company_logo" height="80%" src="assets/company_logo.png" title="">
+  </ng-template>
+
+  <ng-template #right>
+    <p-button (onClick)="refresh()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              icon="pi pi-refresh"
+              pTooltip="Reload"
+              title=""
+              tooltipPosition="left">
+    </p-button>
+
+      <p-button (onClick)="openConfig()"
+                [rounded]="true"
+                [size]="'small'"
+                [text]="true"
+                title=""
+                icon="pi pi-plus"
+                pTooltip="New directory">
+      </p-button>
+
+  </ng-template>
+
+</app-header>
+
+<div class="content">
+  <p-table #dt
+           [loading]="directoriesService.loading"
+           [scrollable]="true"
+           [value]="filtered()"
+           scrollHeight="flex">
+
+    <ng-template #header>
+      <th>
+        <div class="p-3 searchbar">
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search"/>
+            <input (input)="filterDirectories(directories())" [(ngModel)]="filterString" autofocus class="w-full"
+                   pInputText
+                   placeholder="Search"
+                   type="text"/>
+          </p-iconfield>
+        </div>
+      </th>
+    </ng-template>
+
+    <ng-template #body let-item>
+      <tr (click)="selectDirectory(item)" class="hoverable">
+        <td>
+
+          <div class="flex flex-row align-items-center gap-3">
+            <div [ngSwitch]="item.type" class="">
+
+            </div>
+            <div class="flex justify-content-between align-items-center flex-1 gap-4">
+              <div class="flex flex-column justify-content-between align-items-start gap-2">
+                <div>
+                  <div class="font-medium title">{{ item.name }}</div>
+                  <span class="text-secondary text-sm">{{ item.description }}</span>
+                </div>
+              </div>
+              <div class="flex flex-column align-items-end gap-5">
+                @if (item.loading) {
+                  <i class="pi pi-spinner pi-spin text-sm"></i>
+                } @else {
+                  <i class="pi pi-chevron-right text-xs"></i>
+                }
+              </div>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+
+
+    <ng-template #emptymessage>
+      <div class="flex justify-content-center align-items-center p-5">
+        No directories found
+      </div>
+    </ng-template>
+
+  </p-table>
+
+</div>
+
+

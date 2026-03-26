@@ -1,0 +1,211 @@
+<app-header [title]="directory()?.name">
+
+  <ng-template #left>
+    <p-button (onClick)="back()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              icon="pi pi-chevron-left"
+              pTooltip="Back"
+              title=""
+              tooltipPosition="right">
+    </p-button>
+  </ng-template>
+
+  <ng-template #right>
+    <p-button (onClick)="refresh()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              icon="pi pi-refresh"
+              pTooltip="Reload"
+              title=""
+              tooltipPosition="left">
+
+    </p-button>
+
+    <p-button (onClick)="editDirectory()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              title=""
+              icon="pi pi-pencil"
+              pTooltip="Edit directory"
+              tooltipPosition="left">
+    </p-button>
+
+    <p-button (onClick)="addInteraction()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              title=""
+              icon="pi pi-plus"
+              pTooltip="Add interaction"
+              tooltipPosition="left">
+    </p-button>
+
+  </ng-template>
+
+</app-header>
+<div class="content">
+  <p-table #dt
+           [loading]="interactionsService.loading"
+           [scrollable]="true"
+           [value]="interactions()!"
+           scrollHeight="flex">
+
+<!--    <ng-template #header>-->
+<!--      <tr>-->
+<!--        <th pSortableColumn="type" class="iconCell" id="type">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Media-->
+<!--            <p-sortIcon field="type" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th pSortableColumn="date" id="date">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Date-->
+<!--            <p-sortIcon field="date" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th pSortableColumn="direction" class="iconCell" id="direction">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Direction-->
+<!--            <p-sortIcon field="direction" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th pSortableColumn="duration" id="duration" class="iconCell">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Duration-->
+<!--            <p-sortIcon field="duration" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th pSortableColumn="ani" id="ani">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Ani-->
+<!--            <p-sortIcon field="ani" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th pSortableColumn="dnis" id="dnis">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Dnis-->
+<!--            <p-sortIcon field="dnis" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th pSortableColumn="status" id="status">-->
+<!--          <div class="flex items-center gap-2">-->
+<!--            Status-->
+<!--            <p-sortIcon field="status" />-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th id="actions" class="iconCell">Actions</th>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
+
+    <ng-template #body let-item>
+      <tr>
+        <td>
+
+          <div class="flex align-items-center gap-3">
+            <div class="">
+              <span class="material-symbols-outlined">
+                    @switch (item.type) {
+                      @case ('voice') { call }
+                      @case ('email') { mail }
+                      @case ('chat') { chat }
+                      @case ('message') { chat }
+                      @case ('callback') { phone_callback }
+                    }
+                </span>
+            </div>
+            <div class="flex justify-content-between align-items-center flex-1 gap-4">
+
+                <div class="flex flex-column flex-1">
+                  <div class="flex align-items-center gap-2 justify-content-between">
+                    <div class="font-medium text-sm title">{{item.date | date:'short'}}</div>
+                    <div class="text-sm title">{{item.duration | durationFormat}}</div>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="text-secondary text-sm">{{ item.direction | titlecase }}</span>
+                  </div>
+                </div>
+
+              <div class="flex align-items-center gap-1">
+
+                <p-tag [value]="item.status | titlecase" [severity]="getSeverity(item.status)" />
+
+                <p-button (onClick)="openDetails(item)"
+                          [rounded]="true"
+                          [text]="true"
+                          size="small"
+                          icon="pi pi-pencil">
+                </p-button>
+
+                <p-button (onClick)="openInteractionDetails(item)"
+                          [rounded]="true"
+                          [text]="true"
+                          size="small"
+                          icon="pi pi-external-link">
+                </p-button>
+
+              </div>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+<!--      <tr>-->
+<!--        <td class="text-center">-->
+<!--          <span class="material-symbols-outlined">-->
+<!--                @switch (item.type) {-->
+<!--                  @case ('voice') { call }-->
+<!--                  @case ('email') { mail }-->
+<!--                  @case ('chat') { chat }-->
+<!--                  @case ('message') { chat }-->
+<!--                  @case ('callback') { phone_callback }-->
+<!--                }-->
+<!--            </span>-->
+<!--        </td>-->
+<!--        <td>{{item.date | date:'short'}}</td>-->
+<!--        <td class="text-center">-->
+<!--          <span class="material-symbols-outlined" [class.inbound]="item.direction === 'inbound'">outbound</span>-->
+<!--        </td>-->
+<!--        <td>{{item.duration | durationFormat}}</td>-->
+<!--        <td>{{ item.ani }}</td>-->
+<!--        <td>{{ item.dnis }}</td>-->
+<!--        <td> <p-tag [value]="item.status" [severity]="getSeverity(item.status)" /></td>-->
+<!--        <td>-->
+<!--          <div class="flex align-items-center gap-1">-->
+
+<!--            <p-button [rounded]="true"-->
+<!--                      [text]="true"-->
+<!--                      size="small"-->
+<!--                      icon="pi pi-pencil">-->
+<!--            </p-button>-->
+
+<!--            <p-button (onClick)="openInteractionDetails(item)"-->
+<!--                      [rounded]="true"-->
+<!--                      [text]="true"-->
+<!--                      size="small"-->
+<!--                      icon="pi pi-external-link">-->
+<!--            </p-button>-->
+
+<!--          </div>-->
+<!--        </td>-->
+<!--      </tr>-->
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="9">
+          <div class="flex justify-content-center align-items-center">
+            No interactions found
+          </div>
+        </td>
+      </tr>
+
+    </ng-template>
+
+  </p-table>
+
+</div>

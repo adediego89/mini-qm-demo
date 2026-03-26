@@ -1,0 +1,173 @@
+<app-header [title]="'Interaction details'">
+
+  <ng-template #left>
+    <p-button (onClick)="back()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              icon="pi pi-chevron-left"
+              pTooltip="Back"
+              title=""
+              tooltipPosition="right">
+    </p-button>
+  </ng-template>
+
+  <ng-template #right>
+
+    <p-button (onClick)="openInGenesysCloud()"
+              [rounded]="true"
+              [size]="'small'"
+              [text]="true"
+              title=""
+              icon="pi pi-external-link"
+              pTooltip="Open in GenesysCloud"
+              tooltipPosition="left">
+    </p-button>
+    @let changes = pendingChanges();
+    @if (changes > 0) {
+      <p-overlaybadge severity="danger">
+        <p-button (onClick)="saveChanges()"
+                  [rounded]="true"
+                  [size]="'small'"
+                  [text]="true"
+                  [disabled]="changes === 0"
+                  title=""
+                  icon="pi pi-save"
+                  pTooltip="Save changes"
+                  tooltipPosition="left">
+        </p-button>
+      </p-overlaybadge>
+    } @else {
+      <p-button [rounded]="true"
+                [size]="'small'"
+                [text]="true"
+                [disabled]="true"
+                title=""
+                icon="pi pi-save"
+                pTooltip="Save changes"
+                tooltipPosition="left">
+      </p-button>
+    }
+
+
+
+
+  </ng-template>
+
+</app-header>
+<div class="content">
+  @let cInteraction = modelInteraction();
+  <p-card>
+    @if (cInteraction) {
+      <p-accordion [value]="['0', '1']" [multiple]="true">
+        <p-accordion-panel value="0">
+          <p-accordion-header>General</p-accordion-header>
+          <p-accordion-content>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                InteractionId:
+              </div>
+              <div class="propertyValue">
+                {{cInteraction.key}}
+              </div>
+            </div>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                Date:
+              </div>
+              <div class="propertyValue">
+                {{ cInteraction.date | date:'short' }}
+              </div>
+            </div>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                Direction:
+              </div>
+              <div class="propertyValue">
+                {{ cInteraction.direction | titlecase }}
+              </div>
+            </div>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                Duration:
+              </div>
+              <div class="propertyValue">
+                {{ cInteraction.duration | durationFormat }}
+              </div>
+            </div>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                Ani:
+              </div>
+              <div class="propertyValue">
+                {{ cInteraction.ani }}
+              </div>
+            </div>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                Dnis:
+              </div>
+              <div class="propertyValue">
+                {{cInteraction.dnis}}
+              </div>
+            </div>
+            <div class="flex justify-content-between gap-1 mb-1">
+              <div class="property">
+                Status:
+              </div>
+              <div class="propertyValue">
+                <p-select [options]="statusOpts" [(ngModel)]="cInteraction.status">
+
+                  <ng-template #selectedItem let-selectedOption>
+                    @if (selectedOption) {
+                      <p-tag [severity]="getSeverity(selectedOption.value)" [value]="selectedOption.label | titlecase"></p-tag>
+                    }
+                  </ng-template>
+                  <ng-template let-status #item>
+                    <p-tag [severity]="getSeverity(status.value)" [value]="status.label | titlecase"></p-tag>
+                  </ng-template>
+
+                </p-select>
+              </div>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+        <p-accordion-panel value="1">
+          <p-accordion-header>Notes</p-accordion-header>
+          <p-accordion-content>
+
+            <p-button severity="primary" label="Add note" icon="pi pi-plus" fluid (onClick)="openNewNote()" styleClass="mb-2"></p-button>
+
+            <div class="flex flex-column gap-2">
+
+            @for (note of cInteraction.notes; track $index) {
+              <p-panel>
+
+                <ng-template #header>
+                  <div class="flex justify-content-between gap-2 w-full">
+                    <span class="text-color-secondary text-xs">{{note.user}}</span>
+                    <span class="text-color-secondary text-xs">{{note.date | date:'short'}}</span>
+                  </div>
+                </ng-template>
+
+                <p class="m-0">{{note.text}}</p>
+              </p-panel>
+            }
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    }
+  </p-card>
+
+</div>
+
+<p-dialog header="New note" [modal]="true" [(visible)]="noteDialogVisible" [style]="{ width: '25rem' }">
+  <div class="flex flex-column gap-3">
+    <textarea rows="5" pTextarea [(ngModel)]="noteText"></textarea>
+    <div class="flex justify-content-between">
+      <p-button label="Cancel" severity="secondary" (onClick)="noteDialogVisible = false" />
+      <p-button label="Add" (onClick)="addNote()" [disabled]="!noteText"/>
+    </div>
+  </div>
+</p-dialog>

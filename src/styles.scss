@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'material-symbols';
+
+:root {
+  --p-disabled-opacity: 0.4;
+  --p-primary-color: #2a60c8;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-weight: normal;
+  background: var(--p-surface-100);
+}
+
+.itemBorder {
+  border-top: 1px solid #e5e9f0;
+}
+
+.p-datatable .p-datatable-table-container {
+  scrollbar-width: thin;
+}
+
+.p-tab {
+  flex: 1;
+  justify-content: center;
+
+  &.p-tab-active {
+    color: black;
+    border-bottom-width: 4px;
+  }
+
+}
+
+.contentForm {
+  background: var(--p-surface-0);
+}
+
+.material-symbols-outlined {
+  font-size: 21px;
+
+  &.inbound {
+    transform: rotate(180deg);
+  }
+}
+
+.iconCell {
+  width: 50px;
+}
+
