@@ -69,7 +69,7 @@ export class DirectoryListComponent {
 
   openConfig(){
     this.dialogService.open(DirectoryNewComponent, {
-      header: 'New directory',
+      header: 'New',
       width: '90vw'
     });
   }
